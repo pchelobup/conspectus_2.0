@@ -9,7 +9,7 @@
                 </c:when>
                 <c:otherwise>
                     <p>Нечего проверять и учить, ни одного вопроса не найденно</p>
-                    <p><a href="${pageContext.request.contextPath}/conspectus?action=add">Добавить вопрос</a></p>
+                    <p><a href="${pageContext.request.contextPath}/conspectus/add">Добавить вопрос</a></p>
                 </c:otherwise>
             </c:choose>
         </c:if>
@@ -17,14 +17,9 @@
         <c:if test="${requestScope.get('nothing') eq 'allDone'}">
             <p>Все вопросы проверенны</p>
             <c:if test="${requestScope.get('type') eq 'check'}">
-                Правильных ответов ${requestScope.get('countRightAnswerC')} из ${requestScope.get('countAllCheckedQwC')}
+                Правильных ответов ${requestScope.get('rightAnswer')} из ${requestScope.get('count')}
                 <br>
                 Вопросы на которые вы ответили не правильно больше не считаются проверенными.
-            </c:if>
-            <c:if test="${requestScope.get('type') eq 'learnAndCheck'}">
-                Подтверидили знания в ${requestScope.get('countRightAnswerCheckedQW')} вопросах из ${requestScope.get("countAllCheckedQwCL")}
-                <br>
-                Всего правильных ответов ${requestScope.get('countRightAnswerCL')} из ${requestScope.get('countAllQw')}
             </c:if>
         </c:if>
 

@@ -4,9 +4,11 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.alina.model.Topic;
 import ru.alina.model.TopicSelected;
+import ru.alina.model.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @Repository
 @Transactional
@@ -16,9 +18,10 @@ public class JpaTopicSelectedRepository implements TopicSelectedRepository {
 
     @Override
     public TopicSelected get(int userId) {
-        return (TopicSelected) em.createQuery("SELECT ts from TopicSelected  ts WHERE  ts.user.id=:userId")
+        List<TopicSelected> list = em.createNamedQuery(TopicSelected.GET, TopicSelected.class)
                 .setParameter("userId", userId)
-                .getSingleResult();
+                .getResultList();
+        return list.size() == 0 ? null : list.get(0);
     }
 
     @Override
@@ -39,5 +42,12 @@ public class JpaTopicSelectedRepository implements TopicSelectedRepository {
         TopicSelected topicSelected = get(userId);
         topicSelected.setTopic(em.getReference(Topic.class, topicId));
         em.merge(topicSelected);
+    }
+
+    @Override
+    public TopicSelected create(TopicSelected topicSelected, int userId) {
+        topicSelected.setUser(em.getReference(User.class, userId));
+        em.persist(topicSelected);
+        return topicSelected;
     }
 }

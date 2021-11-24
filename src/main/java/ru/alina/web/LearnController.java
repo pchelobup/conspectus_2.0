@@ -8,25 +8,25 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.WebRequest;
 import ru.alina.model.Summary;
-import ru.alina.repository.SummaryRepository;
+import ru.alina.service.SummaryService;
 
 import java.util.Objects;
 
 @Controller
 @RequestMapping(value = "/learn")
 public class LearnController {
-    SummaryRepository summaryRepository;
+    SummaryService summaryService;
 
     @Autowired
-    public void setSummaryRepository(SummaryRepository summaryRepository) {
-        this.summaryRepository = summaryRepository;
+    public void setSummaryService(SummaryService summaryService) {
+        this.summaryService = summaryService;
     }
 
     @GetMapping
     public String learn(Model model) {
         int userId = SecurityUtil.authUserId();
-        long count = summaryRepository.getCount(userId);
-        long checkedCount = summaryRepository.countChecked(userId);
+        long count = summaryService.getCount(userId);
+        long checkedCount = summaryService.countChecked(userId);
         if (count==0){
             model.addAttribute("nothing", "noAdd");
         }
@@ -34,7 +34,7 @@ public class LearnController {
             model.addAttribute("nothing", "allDone");
         }
         else {
-            Summary summary = summaryRepository.getRandomNotChecked(userId);
+            Summary summary = summaryService.getRandomNotChecked(userId);
             model.addAttribute("summary", summary);
             model.addAttribute("count", count);
             model.addAttribute("checkedCount", checkedCount);
@@ -48,9 +48,9 @@ public class LearnController {
         if (know) {
             int sid = Integer.parseInt(Objects.requireNonNull(request.getParameter("sid")));
             int userId = SecurityUtil.authUserId();
-            Summary summary = summaryRepository.get(sid, userId);
+            Summary summary = summaryService.get(sid, userId);
             summary.setCheck(true);
-            summaryRepository.save(summary, userId);
+            summaryService.update(summary, userId);
         }
         return "redirect:/learn";
     }
@@ -59,9 +59,9 @@ public class LearnController {
     public String checkAnswer(WebRequest request, Model model) {
         int userId = SecurityUtil.authUserId();
         int sid = Integer.parseInt(Objects.requireNonNull(request.getParameter("sid")));
-        long count = summaryRepository.getCount(userId);
-        long checkedCount = summaryRepository.countChecked(userId);
-        model.addAttribute("summary", summaryRepository.get(sid, userId));
+        long count = summaryService.getCount(userId);
+        long checkedCount = summaryService.countChecked(userId);
+        model.addAttribute("summary", summaryService.get(sid, userId));
         model.addAttribute("type", "learn");
         model.addAttribute("count", count);
         model.addAttribute("checkedCount", checkedCount);

@@ -11,7 +11,7 @@
     <jsp:include page="section/head.jsp" />
 </head>
 <body>
-    <form method="post" action="/">
+    <form method="post" action="${pageContext.request.contextPath}/">
        <select name="userId">
            <option value="1">user1</option>
            <option value="2">user2</option>

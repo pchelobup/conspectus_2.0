@@ -2,7 +2,6 @@ package ru.alina.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @NamedQueries({
@@ -119,8 +118,10 @@ public class Summary extends BaseEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Summary that = (Summary) o;
-        return id == that.id;
+        Summary summary = (Summary) o;
+        return check == summary.check &&
+                question.equals(summary.question) &&
+                answer.equals(summary.answer);
     }
 
     @Override

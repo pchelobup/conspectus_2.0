@@ -1,6 +1,5 @@
 package ru.alina.repository;
 
-import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.alina.model.Summary;
@@ -64,26 +63,25 @@ public class JpaSummaryRepository implements SummaryRepository {
     }
 
     @Override
-    public List<Summary> getByTopic(int topiId, int userId) {
+    public List<Summary> getByTopic(int topicId, int userId) {
         return em.createNamedQuery(Summary.BELONG_TOPIC, Summary.class)
                 .setParameter("userId", userId)
-                .setParameter("topicId", topiId)
+                .setParameter("topicId", topicId)
                 .getResultList();
     }
 
     @Override
     public Summary getRandomNotChecked(int userId) {
         Integer max = (Integer)
-                em.createQuery("select max(s.id) from Summary s where s.check =false")
+                em.createQuery("select max(s.id) from Summary s where s.user.id=:userId and s.check =false")
+                        .setParameter("userId", userId)
                         .getSingleResult();
 
 
-        if (max == null) {
-            return null;
-        }
 
         Integer min = (Integer)
-                em.createQuery("select min(s.id) from Summary s where s.check = false ")
+                em.createQuery("select min(s.id) from Summary s where s.user.id=:userId and s.check = false ")
+                        .setParameter("userId", userId)
                         .getSingleResult();
 
 
@@ -92,8 +90,9 @@ public class JpaSummaryRepository implements SummaryRepository {
         int id = min + (int) (Math.random() * ++max);
 
 
-        return (Summary) em.createQuery("SELECT s from Summary s where s.id >=:id and s.check =false ")
+        return (Summary) em.createQuery("SELECT s from Summary s where s.id >=:id and s.user.id=:userId and s.check =false ")
                 .setParameter("id", id)
+                .setParameter("userId", userId)
                 .setMaxResults(1)
                 .getSingleResult();
     }

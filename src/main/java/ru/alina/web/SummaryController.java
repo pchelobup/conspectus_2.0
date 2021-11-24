@@ -9,9 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.WebRequest;
 import ru.alina.model.Summary;
 import ru.alina.model.Topic;
-import ru.alina.repository.SummaryRepository;
-import ru.alina.repository.TopicRepository;
-import ru.alina.repository.TopicSelectedRepository;
+import ru.alina.service.SummaryService;
+import ru.alina.service.TopicService;
 
 import java.util.List;
 import java.util.Objects;
@@ -19,61 +18,67 @@ import java.util.Objects;
 @Controller
 @RequestMapping(value = "/conspectus")
 public class SummaryController {
-    TopicRepository topicRepository;
-    SummaryRepository summaryRepository;
-    TopicSelectedRepository topicSelectedRepository;
+    SummaryService summaryService;
+    TopicService topicService;
 
     @Autowired
-    public void setTopicRepository(TopicRepository topicRepository) {
-        this.topicRepository = topicRepository;
+    public void setSummaryService(SummaryService summaryService) {
+        this.summaryService = summaryService;
     }
 
     @Autowired
-    public void setSummaryRepository(SummaryRepository summaryRepository) {
-        this.summaryRepository = summaryRepository;
+    public void setTopicService(TopicService topicService) {
+        this.topicService = topicService;
     }
 
-    @Autowired
-    public void setTopicSelectedRepository(TopicSelectedRepository topicSelectedRepository) {
-        this.topicSelectedRepository = topicSelectedRepository;
-    }
+
 
     @GetMapping
     public String getListTopicWithSummaries(Model model) {
         int userId = SecurityUtil.authUserId();
-        model.addAttribute("topics", topicRepository.getAll(userId));
-        model.addAttribute("checkedCount", summaryRepository.countChecked(userId));
-        model.addAttribute("count", summaryRepository.countAllQuestion(userId));
+        model.addAttribute("topics", topicService.getAll(userId));
+        model.addAttribute("checkedCount", summaryService.countChecked(userId));
+        model.addAttribute("count", summaryService.countAllQuestion(userId));
         return "home";
     }
 
     @GetMapping("/read")
     public String read(WebRequest request, Model model) {
         int userId = SecurityUtil.authUserId();
-        int topiId = Integer.parseInt(Objects.requireNonNull(request.getParameter("topicId")));
-        List<Summary> summaries = summaryRepository.getByTopic(topiId, userId);
+        String topicIdS = request.getParameter("topicId");
+        List<Summary> summaries;
+        if (topicIdS == null) {
+            summaries = summaryService.getAll(userId);
+            model.addAttribute("topicName", "all topics");
+        }
+        else {
+            int topiId = Integer.parseInt(topicIdS);
+            summaries = summaryService.getByTopic(topiId, userId);
+            model.addAttribute("topicName", topicService.get(topiId, userId).getName());
+        }
+
         model.addAttribute("summaries", summaries);
-        model.addAttribute("topicName", topicRepository.get(topiId, SecurityUtil.authUserId()).getName());
         return "read";
     }
 
     @GetMapping("/add")
     public String add(Model model) {
         int userId = SecurityUtil.authUserId();
-        List<Topic> topics = topicRepository.getAll(userId);
+        List<Topic> topics = topicService.getAll(userId);
+
         if (topics == null) {
-            return "topics";
+            return "redirect:/topic";
         }
         model.addAttribute("topics", topics);
-        Topic topicSelected = topicSelectedRepository.getTopicSelected(userId);
+        Topic topicSelected = topicService.getTopicSelected(userId);
         model.addAttribute("topicSelected", topicSelected);
         return "summaryAdd";
     }
 
     @GetMapping("/update")
     public String update(WebRequest request, Model model) {
-        model.addAttribute("summary", summaryRepository.get(Integer.parseInt(request.getParameter("sid")), SecurityUtil.authUserId()));
-        model.addAttribute("topics", topicRepository.getAll(SecurityUtil.authUserId()));
+        model.addAttribute("summary", summaryService.get(Integer.parseInt(Objects.requireNonNull(request.getParameter("sid"))), SecurityUtil.authUserId()));
+        model.addAttribute("topics", topicService.getAll(SecurityUtil.authUserId()));
         return "summaryEdit";
     }
 
@@ -85,16 +90,16 @@ public class SummaryController {
         String answer = request.getParameter("answer");
         String submit = request.getParameter("button");
         int topicId = Integer.parseInt(Objects.requireNonNull(request.getParameter("topicId")));
-        Topic topic = topicRepository.get(topicId, userId);
+        Topic topic = topicService.get(topicId, userId);
         if (submit.equalsIgnoreCase("save")) {
-            Summary summary = summaryRepository.get(sid, userId);
+            Summary summary = summaryService.get(sid, userId);
             summary.setQuestion(question);
             summary.setAnswer(answer);
             summary.setTopic(topic);
-            summaryRepository.save(summary, userId);
+            summaryService.update(summary, userId);
 
         } else if (submit.equalsIgnoreCase("delete")) {
-            summaryRepository.delete(sid, userId);
+            summaryService.delete(sid, userId);
 
         }
         return "redirect:/conspectus/read?topicId=" + topicId;
@@ -104,15 +109,15 @@ public class SummaryController {
     public String add(WebRequest request, Model model) {
         int userId = SecurityUtil.authUserId();
         int topicId = Integer.parseInt(Objects.requireNonNull(request.getParameter("topicId")));
-        Topic topic = topicRepository.get(topicId, userId);
-        if (topic.getId() != topicSelectedRepository.getId(SecurityUtil.authUserId())) {
-            topicSelectedRepository.update(topic.getId(), SecurityUtil.authUserId());
-        }
+        Topic topic = topicService.get(topicId, userId);
+     /*   if (topic.getId() != topicService.getId(SecurityUtil.authUserId())) {
+            topicService.update(topic.getId(), SecurityUtil.authUserId());
+        } */
         String question = request.getParameter("question");
         String answer = request.getParameter("answer");
         Summary summary = new Summary(question, answer, false, topic);
-        summaryRepository.save(summary, SecurityUtil.authUserId());
-        model.addAttribute("topics", topicRepository.getAll(SecurityUtil.authUserId()));
+        summaryService.create(summary, SecurityUtil.authUserId());
+        model.addAttribute("topics", topicService.getAll(SecurityUtil.authUserId()));
         return "redirect:/conspectus/add";
     }
 }

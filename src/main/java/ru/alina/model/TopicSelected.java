@@ -1,10 +1,13 @@
 package ru.alina.model;
 
 import javax.persistence.*;
-
+@NamedQueries({
+        @NamedQuery(name = TopicSelected.GET, query = "SELECT ts from TopicSelected  ts WHERE  ts.user.id=:userId")
+})
 @Entity
 @Table(name = "topic_selected")
 public class TopicSelected extends BaseEntity {
+    public final static String GET = "TopicSelected.get";
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "topic_id" )

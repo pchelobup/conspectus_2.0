@@ -8,20 +8,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.WebRequest;
 import ru.alina.model.Summary;
-import ru.alina.repository.SummaryRepository;
+import ru.alina.service.SummaryService;
 import ru.alina.to.Check;
-import javax.annotation.PostConstruct;
 import java.util.*;
 
 @Controller
 @RequestMapping("check")
 public class CheckController {
-    SummaryRepository summaryRepository;
+    SummaryService summaryService;
     Check check;
 
     @Autowired
-    public void setSummaryRepository(SummaryRepository summaryRepository) {
-        this.summaryRepository = summaryRepository;
+    public void setSummaryService(SummaryService summaryService) {
+        this.summaryService = summaryService;
     }
 
     @Autowired
@@ -29,23 +28,19 @@ public class CheckController {
         this.check = check;
     }
 
-    @PostConstruct
-    protected void init() {
-
-    }
 
 
     @GetMapping("/init")
     public String checkInit(Model model) {
         if (!check.isExist()) {
             int userId = SecurityUtil.authUserId();
-            List<Summary> summaryList = summaryRepository.getCheckedSummary(userId);
+            List<Summary> summaryList = summaryService.getCheckedSummary(userId);
             if (summaryList !=null){
-                LinkedList<Summary> ss = new LinkedList(summaryList);
-                Collections.shuffle(ss);
-                check.setSummaries(ss);
+                LinkedList<Summary> summaries = new LinkedList(summaryList);
+                Collections.shuffle(summaries);
+                check.setSummaries(summaries);
                 check.setNumber(1);
-                check.setCount(summaryRepository.countChecked(userId));
+                check.setCount(summaryService.countChecked(userId));
                 check.setExist(true);
             }
             else {
@@ -67,6 +62,11 @@ public class CheckController {
             model.addAttribute("count", check.getCount());
         }
         else {
+            int rightAnswer = check.getRightAnswer();
+            long count = check.getCount();
+            check.reset();
+            model.addAttribute("rightAnswer", rightAnswer);
+            model.addAttribute("count", count);
             model.addAttribute("nothing", "allDone");
             model.addAttribute("type", "check");
         }
@@ -82,9 +82,12 @@ public class CheckController {
             boolean know = Boolean.parseBoolean(request.getParameter("btn"));
             if (!know) {
                 int userId = SecurityUtil.authUserId();
-                Summary summary = summaryRepository.get(sid, userId);
+                Summary summary = summaryService.get(sid, userId);
                 summary.setCheck(false);
-                summaryRepository.save(summary, userId);
+                summaryService.update(summary, userId);
+            }
+            else {
+                check.incrementRightAnswer();
             }
             check.remove();
          }
@@ -98,7 +101,7 @@ public class CheckController {
         int sid = Integer.parseInt(Objects.requireNonNull(request.getParameter("sid")));
         LinkedList<Summary> summaries = check.getSummaries();
         if (summaries.getFirst().getId()==sid) {
-            model.addAttribute("summary", summaryRepository.get(sid, userId));
+            model.addAttribute("summary", summaryService.get(sid, userId));
             model.addAttribute("number", check.getNumber());
             model.addAttribute("count", check.getCount());
             return "checkAnswer";

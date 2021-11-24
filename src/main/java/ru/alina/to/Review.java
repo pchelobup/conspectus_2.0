@@ -4,6 +4,7 @@ import ru.alina.model.Summary;
 
 import java.util.Queue;
 
+
 public class Review {
 
     private Queue<Summary> summaries;

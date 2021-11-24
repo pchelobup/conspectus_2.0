@@ -44,10 +44,10 @@ public class JpaTopicRepository implements TopicRepository {
 
     @Override
     public List<Topic> getAll(int userId) {
-        List<Topic> topics =  em.createNamedQuery(Topic.ALL, Topic.class)
+        return em.createNamedQuery(Topic.ALL, Topic.class)
                 .setParameter("userId", userId)
                 .getResultList();
-        return topics.size()==0 ? null : topics;
+
     }
 
  /*   @Override

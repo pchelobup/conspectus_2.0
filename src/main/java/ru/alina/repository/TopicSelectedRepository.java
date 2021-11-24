@@ -11,4 +11,6 @@ public interface TopicSelectedRepository {
     void update(int topiId, int userId);
 
     TopicSelected get(int userId);
+
+    TopicSelected create(TopicSelected topicSelected, int userId);
 }

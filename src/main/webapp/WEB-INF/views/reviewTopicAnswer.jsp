@@ -18,7 +18,9 @@
             </div>
             <h5>${review.get().question}</h5>
             <div class="text">${review.get().answer}</div>
-            <form method="post" action="${pageContext.request.contextPath}/review">
+            <form method="post" action="${pageContext.request.contextPath}/review" class="app-btn">
+                <input type="hidden" name="sid" value="${review.get().id}">
+                <input type="hidden" name="topicId" value="${review.get().topic.id}">
                 <c:choose>
                     <c:when test="${review.get().check}">
                         know <input type="radio" name="btn" value="true" checked>

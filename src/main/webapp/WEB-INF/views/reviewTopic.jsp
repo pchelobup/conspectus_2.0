@@ -22,10 +22,8 @@
             <div>
                 <h6 class="counter">${review.number}/${review.count}</h6>
             </div>
-
-
             <h5>${review.get().question}</h5>
-            <a href="${pageContext.request.contextPath}/review/answer?sid=${review.get().id}">show answer</a>
+            <a href="${pageContext.request.contextPath}/review/answer?sid=${review.get().id}" class="app-btn">show answer</a>
         </div>
     </div>
 </div>

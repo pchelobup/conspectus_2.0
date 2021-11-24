@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.WebRequest;
 import ru.alina.model.Topic;
-import ru.alina.repository.TopicRepository;
+import ru.alina.service.TopicService;
 
 import java.util.List;
 import java.util.Objects;
@@ -17,17 +17,17 @@ import java.util.Objects;
 @RequestMapping(value = "/topic")
 public class TopicController {
 
-    TopicRepository topicRepository;
+    TopicService topicService;
 
     @Autowired
-    public void setTopicRepository(TopicRepository topicRepository) {
-        this.topicRepository = topicRepository;
+    public void setTopicService(TopicService topicService) {
+        this.topicService = topicService;
     }
 
     @GetMapping
     public String getTopic(Model model) {
         int userId = SecurityUtil.authUserId();
-        List<Topic> topics = topicRepository.getAll(userId);
+        List<Topic> topics = topicService.getAll(userId);
         model.addAttribute("topics", topics);
         model.addAttribute("topic", new Topic());
         return "topics";
@@ -36,14 +36,14 @@ public class TopicController {
     @GetMapping("/delete")
     public String delete(WebRequest request) {
         int userId = SecurityUtil.authUserId();
-        topicRepository.delete(Integer.parseInt(Objects.requireNonNull(request.getParameter("topicId"))), userId);
+        topicService.delete(Integer.parseInt(Objects.requireNonNull(request.getParameter("topicId"))), userId);
         return "redirect:/topic";
     }
 
     @PostMapping("/add")
     public String add(Topic topic) {
         int userId = SecurityUtil.authUserId();
-        topicRepository.save(topic, userId);
+        topicService.create(topic, userId);
         return "redirect:/topic";
     }
 
@@ -51,7 +51,7 @@ public class TopicController {
     public String update(WebRequest request, Model model) {
         int userId = SecurityUtil.authUserId();
         int topicId = Integer.parseInt(Objects.requireNonNull(request.getParameter("topicId")));
-        Topic topic = topicRepository.get(topicId, userId);
+        Topic topic = topicService.get(topicId, userId);
         model.addAttribute("topic", topic);
         return "topicEdit";
     }
@@ -59,7 +59,7 @@ public class TopicController {
     @PostMapping("/update")
     public String update(Topic topic) {
         int userId = SecurityUtil.authUserId();
-        topicRepository.save(topic, userId);
+        topicService.update(topic, userId);
         return "redirect:/topic";
     }
 

@@ -13,6 +13,7 @@ public class Check {
     int number;
     LinkedList<Summary> summaries;
     boolean exist;
+    int rightAnswer;
 
     public Check() {
     }
@@ -57,12 +58,27 @@ public class Check {
         return summaries.peekFirst();
     }
 
+    public int getRightAnswer() {
+        return rightAnswer;
+    }
+
+    public void incrementRightAnswer() {
+        rightAnswer++;
+    }
+
+    public void reset() {
+        this.exist=false;
+        this.count=0;
+        this.number=0;
+        this.rightAnswer=0;
+        this.summaries=null;
+    }
+
     @Override
     public String toString() {
         return "Check{" +
                 "count=" + count +
                 ", number=" + number +
-            /*    ", summaries=" + summaries.g +   */
                 '}';
     }
 }

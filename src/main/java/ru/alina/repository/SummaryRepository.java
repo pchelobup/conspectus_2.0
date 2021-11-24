@@ -20,8 +20,8 @@ public interface SummaryRepository {
 
     long countAllQuestion(int userId);
 
-    // null if meal do not belong to userId
-    List<Summary> getByTopic(int topiId, int userId);
+
+    List<Summary> getByTopic(int topicId, int userId);
 
     //null if empty
     Summary getRandomNotChecked(int userId);

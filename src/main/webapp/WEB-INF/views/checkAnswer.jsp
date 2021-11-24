@@ -9,13 +9,14 @@
 
 <jsp:useBean id="summary" class="ru.alina.model.Summary" scope="request"/>
 <div class="container">
-    <jsp:include page="section/checked.jsp"/>
     <div class="row">
         <div class="col-12">
-            <h5 class="topic">Тема: ${summary.topic.name}</h5>
+            <h5>${summary.topic.name}</h5>
+            <hr>
+            <jsp:include page="section/checked.jsp"/>
             <h5>${summary.question}</h5>
             <div class="text">${summary.answer}</div>
-            <form method="post" action="${pageContext.request.contextPath}/check">
+            <form method="post" action="${pageContext.request.contextPath}/check" class="app-btn">
                 <input type="hidden" name="sid" value="${summary.id}">
                 <button type="submit" name="btn" value="true" class="true_button btn">know</button>
                 <button type="submit" name="btn" value="false" class="false_button btn">don't know</button>

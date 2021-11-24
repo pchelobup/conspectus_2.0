@@ -95,3 +95,14 @@ button.false_button {
 .update-topic {
     margin-top: 35px;
 }
+
+.add-topic {
+    margin-top: 30px;
+}
+.add-topic input {
+    margin-left: 5px;
+}
+
+.app-btn {
+    margin-top: 10px;
+}

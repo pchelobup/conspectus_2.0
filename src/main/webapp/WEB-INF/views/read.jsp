@@ -11,17 +11,18 @@
     <div class="row">
         <jsp:useBean id="topicName" scope="request" type="java.lang.String"/>
         <div class="col-12">
-            <h5 class="topic">${topicName}</h5>
+            <h5>${topicName}</h5>
+            <hr>
+         <%--   <jsp:useBean id="summaries" scope="request" type="java.util.List"/> --%>
+            <c:forEach var="summary" items="${summaries}">
+                <jsp:useBean id="summary" class="ru.alina.model.Summary"/>
+                <div class="col-12 textBlock">
+                    <a style="font-size: 10px" href="conspectus/update?sid=${summary.id}">update</a>
+                    <h5>${summary.question}</h5>
+                    <p class="text">${summary.answer}</p>
+                </div>
+            </c:forEach>
         </div>
-        <jsp:useBean id="summaries" scope="request" type="java.util.List"/>
-        <c:forEach var="summary" items="${summaries}">
-            <jsp:useBean id="summary" class="ru.alina.model.Summary"/>
-            <div class="col-12 textBlock">
-                <a style="font-size: 10px" href="conspectus/update?sid=${summary.id}">update</a>
-                <h5>${summary.question}</h5>
-                <p class="text">${summary.answer}</p>
-            </div>
-        </c:forEach>
     </div>
 </div>
 

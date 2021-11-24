@@ -7,6 +7,8 @@
 <body>
 <jsp:include page="section/navigation.jsp"/>
 <div class="container">
+    <jsp:include page="section/nothingShow.jsp"/>
+    <c:if test="${requestScope.get('topics') !=null}">
     <div class="row">
         <div class="col-12">
             <h3>Choose a topic</h3>
@@ -20,6 +22,7 @@
             </c:forEach>
         </div>
     </div>
+    </c:if>
 </div>
 </body>
 </html>

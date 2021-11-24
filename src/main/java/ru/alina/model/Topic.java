@@ -3,7 +3,6 @@ package ru.alina.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
-import java.util.Set;
 
 @NamedQueries({
         @NamedQuery(name = Topic.DELETE, query = "DELETE from Topic t where t.id=:id and t.user.id=:userId"),
@@ -28,6 +27,9 @@ public class Topic extends BaseEntity {
         this.name = name;
     }
 
+    @OneToMany(mappedBy = "topic", fetch = FetchType.LAZY)
+    private List<Summary> summaries;
+
     public Topic() {
     }
 
@@ -45,6 +47,14 @@ public class Topic extends BaseEntity {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<Summary> getSummaries() {
+        return summaries;
+    }
+
+    public void setSummaries(List<Summary> summaries) {
+        this.summaries = summaries;
     }
 
     @Override
