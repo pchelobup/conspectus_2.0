@@ -12,7 +12,7 @@
        http://www.springframework.org/schema/tx/spring-tx.xsd">
 
     <import resource="spring-db.xml"/>
-    <context:property-placeholder location="classpath:db.properties"/>
+    <context:property-placeholder location="classpath:db/db.properties"/>
     <context:component-scan base-package="ru.alina.to" />
     <context:component-scan base-package="ru.alina.service" />
 

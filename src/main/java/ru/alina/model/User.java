@@ -1,10 +1,12 @@
 package ru.alina.model;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Entity
+@Table(name = "users")
 public class User extends BaseEntity {
 
     @NotBlank

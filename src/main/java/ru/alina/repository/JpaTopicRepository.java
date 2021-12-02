@@ -26,6 +26,7 @@ public class JpaTopicRepository implements TopicRepository {
             return null;
         }
         return em.merge(topic);
+
     }
 
     @Override

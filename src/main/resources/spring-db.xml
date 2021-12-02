@@ -3,22 +3,16 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:p="http://www.springframework.org/schema/p" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context.xsd
        http://www.springframework.org/schema/tx
-       http://www.springframework.org/schema/tx/spring-tx.xsd">
+       http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
     <context:component-scan base-package="ru.alina.repository" />
 
-    <bean id="webDataSource"
-          class="org.apache.commons.dbcp.BasicDataSource"
-          destroy-method="close"
-          p:driverClassName="${db.driverClassName}"
-          p:url="${db.url}"
-          p:username="${db.username}"
-          p:password="${db.password}" />
+
 
     <!--jpaVendorAdapter - с помощью нее jpa реалзует сущность-->
     <bean id="emf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
@@ -43,4 +37,32 @@
     </bean>
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <beans profile="prod">
+        <bean id="webDataSource"
+              class="org.apache.commons.dbcp.BasicDataSource"
+              destroy-method="close"
+              p:driverClassName="${db.driverClassName}"
+              p:url="${db.url}"
+              p:username="${db.username}"
+              p:password="${db.password}"
+              p:initialSize="3"/>
+    </beans>
+    <beans profile="test">
+
+
+        <bean id="webDataSource"
+              class="org.apache.commons.dbcp.BasicDataSource"
+              destroy-method="close"
+              p:driverClassName="${db.driverClassName}"
+              p:url="${db.test.url}"
+              p:username="${db.username}"
+              p:password="${db.password}"
+              p:initialSize="3"/>
+
+        <jdbc:initialize-database data-source="webDataSource" enabled="${db.init}">
+            <jdbc:script location="${jdbc.initLocation}"/>
+            <jdbc:script encoding="utf-8" location="classpath:db/populateDB.sql"/>
+        </jdbc:initialize-database>
+    </beans>
 </beans>
