@@ -78,10 +78,6 @@ public class ReviewTopicController {
         if (review.isEmpty()) {
             model.addAttribute("review", review);
             status.setComplete();
-            ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-      /*      HttpSession session = attr.getRequest().getSession(true);
-            System.out.println("status us complete");
-            System.out.println(session.getAttribute("review") + " review");*/
 
             return "reviewTopicResult";
         }
@@ -103,7 +99,7 @@ public class ReviewTopicController {
                     summary.setCheck(true);
                     review.incrementRightAnswerUnchecked();
                 }
-                summaryService.update(summary, topicId, SecurityUtil.authUserId());
+                summaryService.update(summary, SecurityUtil.authUserId());
             } else if (summary.isCheck() && answer) {
                 review.incrementRightAnswerChecked();
             }

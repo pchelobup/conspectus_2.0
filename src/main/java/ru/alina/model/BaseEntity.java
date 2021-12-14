@@ -1,5 +1,7 @@
 package ru.alina.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @MappedSuperclass
@@ -25,6 +27,7 @@ public abstract class BaseEntity {
         this.id = id;
     }
 
+    @JsonIgnore
     public boolean isNew() {
         return this.id == null;
     }

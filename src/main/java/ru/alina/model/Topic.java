@@ -1,7 +1,6 @@
 package ru.alina.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import com.fasterxml.jackson.annotation.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
@@ -27,7 +26,7 @@ public class Topic extends BaseEntity {
 
 
     @OneToMany(mappedBy = "topic", fetch = FetchType.LAZY)
-    @JsonIgnore
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     private List<Summary> summaries;
 
     public Topic(String name) {

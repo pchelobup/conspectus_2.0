@@ -1,6 +1,6 @@
 package ru.alina.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -47,7 +47,7 @@ public class Summary extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "topic_id")
-   // @JsonIgnore
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     private Topic topic;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -131,7 +131,6 @@ public class Summary extends BaseEntity {
                 "id=" + id +
                 ", question='" + question + '\'' +
                 ", answer='" + answer + '\'' +
-                ", topic=" + topic.getId() +
                 ", check=" + check +
                 '}';
     }

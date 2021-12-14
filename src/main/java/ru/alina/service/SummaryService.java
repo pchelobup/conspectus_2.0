@@ -81,12 +81,6 @@ public class SummaryService {
     }
 
     @Transactional(readOnly = true)
-    public List<Summary> getByTopicName(String topicName, int userId) {
-        List<Summary> summaries = summaryRepository.getByTopicName(topicName, userId);
-        return summaries.size()==0 ? null : summaries;
-    }
-
-    @Transactional(readOnly = true)
     public Summary getRandomNotCheckedWithTopic(int userId) {
         return summaryRepository.getRandomNotCheckedWithTopic(userId);
     }

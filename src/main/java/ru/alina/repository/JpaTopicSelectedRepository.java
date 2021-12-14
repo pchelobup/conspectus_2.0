@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.alina.model.Topic;
 import ru.alina.model.TopicSelected;
 import ru.alina.model.User;
-import ru.alina.util.ValidationUtil;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

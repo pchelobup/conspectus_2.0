@@ -3,6 +3,7 @@ package ru.alina.service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import ru.alina.TopicData;
 import ru.alina.model.Summary;
 import ru.alina.util.exception.NotFoundException;
 
@@ -151,5 +152,6 @@ class SummaryServiceTest extends ServiceTest {
     void getWithTopic() {
         Summary actual = summaryService.getWithTopic(SUMMARY1_ID, USER_ID);
         match(actual, SUMMARY1_WITH_TOPIC);
+        TopicData.match(actual.getTopic(), SUMMARY1_WITH_TOPIC.getTopic());
     }
 }

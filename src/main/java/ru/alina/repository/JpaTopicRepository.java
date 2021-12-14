@@ -51,11 +51,4 @@ public class JpaTopicRepository implements TopicRepository {
 
     }
 
- /*   @Override
-    public Topic getByName(String name, int userId) {
-        return (Topic) em.createQuery("select t from Topic t where t.user.id=:userId and t.name=:name")
-                .setParameter("userId", userId)
-                .setParameter("name", name)
-                .getSingleResult();
-    } */
 }

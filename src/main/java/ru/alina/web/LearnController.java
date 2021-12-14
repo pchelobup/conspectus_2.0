@@ -50,7 +50,7 @@ public class LearnController {
             int userId = SecurityUtil.authUserId();
             Summary summary = summaryService.get(sid, userId);
             summary.setCheck(true);
-            summaryService.update(summary, summary.getTopic().getId(), userId);
+            summaryService.update(summary, userId);
         }
         return "redirect:/learn";
     }

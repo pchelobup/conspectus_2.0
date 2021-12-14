@@ -1,13 +1,16 @@
 package ru.alina.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "users")
-public class User extends BaseEntity {
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    protected Integer id;
 
     @NotBlank
     @Size(min = 5, max = 10)
@@ -15,7 +18,7 @@ public class User extends BaseEntity {
 
     @NotBlank
     @Size(min = 5, max = 10)
-    private String parol;
+    private String password;
 
     public String getLogin() {
         return login;
@@ -25,24 +28,26 @@ public class User extends BaseEntity {
         this.login = login;
     }
 
-    public String getParol() {
-        return parol;
+    public String getPassword() {
+        return password;
     }
 
-    public void setParol(String parol) {
-        this.parol = parol;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public User(int id, String login, String parol) {
-        super(id);
+    public User(int id, String login, String password) {
+        this.id=id;
         this.login = login;
-        this.parol = parol;
+        this.password = password;
     }
 
-    public User(String login, String parol) {
-        super(null);
-        this.login = login;
-        this.parol = parol;
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public User() {
@@ -51,9 +56,8 @@ public class User extends BaseEntity {
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
-                ", login='" + login + '\'' +
-                ", parol='" + parol + '\'' +
+                "login='" + login + '\'' +
+                ", password='" + password + '\'' +
                 '}';
     }
 }

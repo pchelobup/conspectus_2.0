@@ -96,7 +96,7 @@ public class SummaryController {
             summary.setQuestion(question);
             summary.setAnswer(answer);
             summary.setTopic(topic);
-            summaryService.update(summary, topicId, userId);
+            summaryService.update(summary, userId);
 
         } else if (submit.equalsIgnoreCase("delete")) {
             summaryService.delete(sid, userId);

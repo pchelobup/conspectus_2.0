@@ -83,7 +83,7 @@ public class JpaSummaryRepository implements SummaryRepository {
 
     @Override
     public List<Summary> getByTopic(int topicId, int userId) {
-        return em.createNamedQuery(Summary.BELONG_TOPIC, Summary.class)
+        return em.createNamedQuery(Summary.BY_TOPIC_ID, Summary.class)
                 .setParameter("userId", userId)
                 .setParameter("topicId", topicId)
                 .getResultList();

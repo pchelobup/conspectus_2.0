@@ -84,7 +84,7 @@ public class CheckController {
                 int userId = SecurityUtil.authUserId();
                 Summary summary = summaryService.get(sid, userId);
                 summary.setCheck(false);
-                summaryService.update(summary, summary.getTopic().getId(), userId);
+                summaryService.update(summary, userId);
             }
             else {
                 check.incrementRightAnswer();

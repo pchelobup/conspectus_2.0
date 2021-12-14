@@ -2,8 +2,9 @@ package ru.alina;
 
 import ru.alina.model.Topic;
 import ru.alina.model.User;
-
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class TopicData {
     public static final int TOPIC1_ID = 3;
@@ -30,5 +31,19 @@ public class TopicData {
 
     public static Topic getUpdated() {
         return new Topic(TOPIC1_ID, "updated");
+    }
+
+    public static void match(Topic actual, Topic expeted) {
+        assertThat(actual)
+                .usingRecursiveComparison()
+                .ignoringFields("summaries", "user")
+                .isEqualTo(expeted);
+    }
+
+    public static void match(List<Topic> actual, List<Topic> expeted) {
+        assertThat(actual)
+                .usingRecursiveComparison()
+                .ignoringFields("summaries", "user")
+                .isEqualTo(expeted);
     }
 }
