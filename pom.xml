@@ -108,11 +108,6 @@
         </dependency>
 
         <!--database-->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.27</version>
-        </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
@@ -137,20 +132,6 @@
             <version>3.0.1-b12</version>
             <scope>provided</scope>
         </dependency>
-
-        <!-- для connection puling -->
-        <dependency>
-            <groupId>commons-dbcp</groupId>
-            <artifactId>commons-dbcp</artifactId>
-            <version>1.4</version>
-        </dependency>
-
-        <!--Since JAXB APIs is no longer in default classpath in JDK 1.9 -->
-      <!--  <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-            <version>2.2.11</version>
-        </dependency> -->
 
         <!-- Webjars (static dependencies distributed as JAR files) -->
         <dependency>
@@ -234,5 +215,40 @@
         </dependency>
 
     </dependencies>
+
+    <profiles>
+    <profile>
+        <id>hsqldb</id>
+        <dependencies>
+            <dependency>
+                <groupId>org.hsqldb</groupId>
+                <artifactId>hsqldb</artifactId>
+                <version>2.5.1</version>
+            </dependency>
+        </dependencies>
+    </profile>
+
+        <profile>
+            <id>mysql</id>
+            <dependencies>
+                <dependency>
+                    <groupId>mysql</groupId>
+                    <artifactId>mysql-connector-java</artifactId>
+                    <version>8.0.27</version>
+                </dependency>
+
+                <!-- для connection puling -->
+                <dependency>
+                    <groupId>commons-dbcp</groupId>
+                    <artifactId>commons-dbcp</artifactId>
+                    <version>1.4</version>
+                </dependency>
+            </dependencies>
+
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+    </profiles>
 
 </project>
