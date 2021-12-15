@@ -24,11 +24,7 @@
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
     <show-object-properties value="true" />
-    <loaded-nodes>
-      <connection connection-id="ff9dd3f5-c872-44f8-ae45-3fd98022a3f8">
-        <schema name="conspectus2" object-types="table" />
-      </connection>
-    </loaded-nodes>
+    <loaded-nodes />
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="ff9dd3f5-c872-44f8-ae45-3fd98022a3f8">
@@ -48,7 +44,7 @@
     <retain-sticky-names value="false" />
   </component>
   <component name="DBNavigator.Project.FileConnectionMappingManager">
-    <mapping file-url="file://$PROJECT_DIR$/src/main/resources/db/initDB.sql" connection-id="ff9dd3f5-c872-44f8-ae45-3fd98022a3f8" session-id="MAIN" current-schema="conspectus2" />
+    <mapping file-url="file://$PROJECT_DIR$/src/main/resources/db/initDB_mysql.sql" connection-id="ff9dd3f5-c872-44f8-ae45-3fd98022a3f8" session-id="MAIN" current-schema="conspectus2" />
   </component>
   <component name="DBNavigator.Project.MethodExecutionManager">
     <method-browser />

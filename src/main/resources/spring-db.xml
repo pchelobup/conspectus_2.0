@@ -11,11 +11,6 @@
        http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
     <context:component-scan base-package="ru.alina.repository" />
-     <!--каждый раз создвет db-->
-    <jdbc:initialize-database enabled="${db.init}">
-        <jdbc:script location="${jdbc.initLocation}"/>
-        <jdbc:script encoding="utf-8" location="classpath:db/populateDB.sql"/>
-    </jdbc:initialize-database>
 
     <!--jpaVendorAdapter - с помощью нее jpa реалзует сущность-->
     <bean id="emf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
@@ -24,13 +19,13 @@
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
         </property>
         <property name="packagesToScan" value="ru.alina.model"/>
-        <!--настройки дял кнкретной реализации-->
+        <!--настройки для кoнкретной реализации-->
         <property name="jpaProperties">
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
-                <prop key="hibernate.max_fetch_size">50</prop>
-                <prop key="hibernate.max_batch_size">10</prop>
                 <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.use_sql_comments">true</prop>
             </props>
         </property>
     </bean>
@@ -41,30 +36,30 @@
 
     <tx:annotation-driven/>
 
-
-
-    <!--<beans profile="prod">
-        <bean id="webDataSource"
-              class="org.apache.commons.dbcp.BasicDataSource"
-              destroy-method="close"
-              p:driverClassName="${db.driverClassName}"
-              p:url="${db.url}"
-              p:username="${db.username}"
-              p:password="${db.password}"
-              p:initialSize="3"/>
-    </beans> -->
-    <!--<beans profile="test"> -->
-
-
+    <beans profile="mysql">
         <bean id="dataSource"
               class="org.apache.commons.dbcp.BasicDataSource"
               destroy-method="close"
-              p:driverClassName="${db.driverClassName}"
+              p:driverClassName="${db.mysql.driverClassName}"
+              p:url="${db.prod.url}"
+              p:username="${db.mysql.username}"
+              p:password="${db.mysql.password}"
+              p:initialSize="300"/>
+
+    </beans>
+
+    <beans profile="hsqldb">
+        <!--каждый раз создвет db-->
+        <jdbc:initialize-database enabled="${db.init}">
+            <jdbc:script location="${jdbc.initLocation}"/>
+            <jdbc:script encoding="utf-8" location="classpath:db/populateDB.sql"/>
+        </jdbc:initialize-database>
+
+        <bean id="dataSource"
+              class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+              p:driverClassName="${db.hsql.driverClassName}"
               p:url="${db.test.url}"
-              p:username="${db.username}"
-              p:password="${db.password}"
-              p:initialSize="3"/>
-
-
-    <!--</beans> -->
+              p:username="${db.hsql.username}"
+              p:password="${db.hsql.password}"/>
+    </beans>
 </beans>

@@ -3,12 +3,12 @@ package ru.alina.service;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import ru.alina.model.Topic;
-import ru.alina.model.User;
 import ru.alina.util.exception.NotFoundException;
 import javax.persistence.PersistenceException;
 import java.util.List;
@@ -25,6 +25,7 @@ import static ru.alina.TopicData.*;
 @ExtendWith(SpringExtension.class)
 /* запуск файла перед каждым тестом */
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
+@ActiveProfiles("hsqldb")
 class TopicServiceTest {
 
     @Autowired

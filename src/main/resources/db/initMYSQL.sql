@@ -1,14 +1,14 @@
-DROP TABLE IF EXISTS summary;
-DROP TABLE IF EXISTS topic_selected;
-DROP TABLE IF EXISTS topic;
-DROP TABLE IF EXISTS users;
+DROP TABLE  IF EXISTS summary;
+DROP TABLE  IF EXISTS topic_selected;
+DROP TABLE  IF EXISTS topic;
+DROP TABLE  IF EXISTS users;
 
 
 
 
 create table users
 (
-    id       int auto_increment
+    id      int auto_increment
         primary key,
     login    varchar(45) null,
     password varchar(45) null
