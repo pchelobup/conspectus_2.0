@@ -8,7 +8,7 @@ public interface TopicSelectedRepository {
 
     int getId(int userId);
 
-    void update(int topiId, int userId);
+    void update(Topic topic, int userId);
 
     TopicSelected get(int userId);
 

@@ -110,9 +110,6 @@ public class SummaryController {
         int userId = SecurityUtil.authUserId();
         int topicId = Integer.parseInt(Objects.requireNonNull(request.getParameter("topicId")));
         Topic topic = topicService.get(topicId, userId);
-     /*   if (topic.getId() != topicService.getId(SecurityUtil.authUserId())) {
-            topicService.update(topic.getId(), SecurityUtil.authUserId());
-        } */
         String question = request.getParameter("question");
         String answer = request.getParameter("answer");
         Summary summary = new Summary(question, answer, false, topic);

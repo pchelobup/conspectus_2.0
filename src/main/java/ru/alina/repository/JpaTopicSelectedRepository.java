@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.alina.model.Topic;
 import ru.alina.model.TopicSelected;
 import ru.alina.model.User;
+import ru.alina.util.ValidationUtil;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -38,9 +39,9 @@ public class JpaTopicSelectedRepository implements TopicSelectedRepository {
     }
 
     @Override
-    public void update(int topicId, int userId) {
+    public void update(Topic topic, int userId) {
         TopicSelected topicSelected = get(userId);
-        topicSelected.setTopic(em.getReference(Topic.class, topicId));
+        topicSelected.setTopic(topic);
         em.merge(topicSelected);
     }
 

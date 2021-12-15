@@ -17,6 +17,9 @@ public class TopicSelected extends BaseEntity {
     @JoinColumn(name = "user_id" )
     User user;
 
+    public TopicSelected() {
+    }
+
     public Topic getTopic() {
         return topic;
     }

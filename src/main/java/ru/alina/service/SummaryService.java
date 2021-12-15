@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.alina.model.Summary;
+import ru.alina.model.Topic;
 import ru.alina.repository.SummaryRepository;
 import ru.alina.repository.TopicSelectedRepository;
 import ru.alina.util.ValidationUtil;
@@ -30,9 +31,9 @@ public class SummaryService {
     public Summary create (Summary summary, int userId) {
         ValidationUtil.notNull(summary,"summary must not be null");
         int topicSelectedId = topicSelectedRepository.getTopicSelected(userId).getId();
-        int topicId = summary.getTopic().getId();
-        if (topicId != topicSelectedId) {
-            topicSelectedRepository.update(topicId, userId);
+        Topic topic = summary.getTopic();
+        if (topic.getId() != topicSelectedId) {
+            topicSelectedRepository.update(topic, userId);
         }
         return summaryRepository.save(summary, userId);
     }

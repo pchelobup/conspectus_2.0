@@ -22,13 +22,27 @@ public class Topic extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
+
+    @OneToMany(mappedBy = "topic", fetch = FetchType.LAZY)
+    private List<Summary> summaries;
+
     public Topic(String name) {
         super(null);
         this.name = name;
     }
 
-    @OneToMany(mappedBy = "topic", fetch = FetchType.LAZY)
-    private List<Summary> summaries;
+    /* for test */
+    public Topic(Integer id, String name) {
+        super(id);
+        this.name = name;
+        this.user = null;
+    }
+
+    public Topic(Integer id, String name, User user) {
+        super(id);
+        this.name = name;
+        this.user = user;
+    }
 
     public Topic() {
     }

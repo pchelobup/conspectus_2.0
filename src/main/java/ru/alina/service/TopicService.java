@@ -3,6 +3,7 @@ package ru.alina.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import ru.alina.model.Topic;
 import ru.alina.model.TopicSelected;
 import ru.alina.repository.TopicRepository;
@@ -29,6 +30,7 @@ public class TopicService {
         this.topicSelectedRepository = topicSelectedRepository;
     }
 
+    @Transactional
     public Topic create(Topic topic, int userId) {
         ValidationUtil.notNull(topic,"topic must not be null");
         Topic topicSave = topicRepository.save(topic, userId);
@@ -37,8 +39,8 @@ public class TopicService {
     }
 
     public void update(Topic topic, int userId) {
-        ValidationUtil.notNull(topicRepository.save(topic, userId),"topic must not be null");
-        ValidationUtil.notFound(topicRepository.save(topic, userId), topic.getId(), name);
+        Assert.notNull(topic, "topic must not be null");
+        ValidationUtil.notFound(topicRepository.save(topic, userId), topic.getId(), Topic.class.getSimpleName());
     }
 
 
@@ -61,6 +63,7 @@ public class TopicService {
     }
 
     public void saveUpdateTopicSelected(Topic topic, int userId) {
+        ValidationUtil.notFound(topic.getUser().getId() == userId, topic.getId(), Topic.class.getSimpleName());
         TopicSelected topicSelected = topicSelectedRepository.get(userId);
 
         if (topicSelected==null){
@@ -69,7 +72,7 @@ public class TopicService {
             topicSelectedRepository.create(topicSelected, userId);
         }
         else {
-            topicSelectedRepository.update(topic.getId(), userId);
+            topicSelectedRepository.update(topic, userId);
         }
     }
 
