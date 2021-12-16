@@ -1,13 +1,11 @@
 package ru.alina;
 
-import org.junit.jupiter.api.Assertions;
 import ru.alina.model.Summary;
 import ru.alina.model.Topic;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static ru.alina.TopicData.TOPIC1_ID;
 
 public class SummaryData {
     public static final int SUMMARY1_ID = 6;
@@ -34,11 +32,11 @@ public class SummaryData {
     public static final List<Summary> SUMMARIES_ONE_TOPIC = List.of(SUMMARY1, SUMMARY2, SUMMARY3, SUMMARY4);
 
     public static Summary getNew() {
-        return new Summary(null, "new question", "new answer", false, new Topic(TOPIC1_ID,  "ООП"));
+        return new Summary(null, "new question", "new answer", false, new Topic(TOPIC_ID,  "ООП"));
     }
 
     public static Summary getUpdated() {
-        return new Summary(SUMMARY1_ID, "updated questuin", "updated answer", SUMMARY1.isCheck(), new Topic(TOPIC1_ID,  "ООП"));
+        return new Summary(SUMMARY1_ID, "updated questuin", "updated answer", SUMMARY1.isCheck(), new Topic(TOPIC_ID,  "ООП"));
     }
 
     public static void match(Summary actual, Summary expeted) {

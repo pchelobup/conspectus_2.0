@@ -4,7 +4,6 @@ package ru.alina.service;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.alina.model.Summary;
-import ru.alina.model.Topic;
 import ru.alina.util.exception.NotFoundException;
 
 import java.util.List;

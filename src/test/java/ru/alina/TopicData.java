@@ -1,7 +1,6 @@
 package ru.alina;
 
 import ru.alina.model.Topic;
-import ru.alina.model.TopicSelected;
 import ru.alina.model.User;
 
 import java.util.List;
@@ -11,6 +10,7 @@ public class TopicData {
     public static final int TOPIC2_ID = 4;
     public static final int TOPI_SELETED_ID = 5;
     public final static int USER_ID = 1;
+
     public final static int USER_EMPTY_ID = 2;
     public final static int NOT_FOUND_ID = 1000;
 
