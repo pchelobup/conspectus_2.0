@@ -1,13 +1,7 @@
 package ru.alina.service;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import ru.alina.model.Topic;
 import ru.alina.util.exception.NotFoundException;
 import javax.persistence.PersistenceException;
@@ -18,15 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static ru.alina.TopicData.*;
 
-@SpringJUnitConfig(locations = {
-        "classpath:root-context.xml",
-        "classpath:spring-db.xml"
-})
-@ExtendWith(SpringExtension.class)
-/* запуск файла перед каждым тестом */
-@Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
-@ActiveProfiles("hsqldb")
-class TopicServiceTest {
+
+class TopicServiceTest extends ServiceTest {
 
     @Autowired
     private TopicService topicService;
@@ -47,6 +34,7 @@ class TopicServiceTest {
     void deleteNotOwn() {
         assertThrows(NotFoundException.class, () -> topicService.delete(TOPIC1_ID, USER_EMPTY_ID));
     }
+
     @Test
     void get() {
         Topic actual = topicService.get(TOPIC1_ID, USER_ID);
@@ -58,7 +46,7 @@ class TopicServiceTest {
 
     @Test
     void getNotFound() {
-        assertThrows(NotFoundException.class, () -> topicService.get(TOPIC1_ID, NOT_FOUND_ID));
+        assertThrows(NotFoundException.class, () -> topicService.get(NOT_FOUND_ID, USER_ID));
     }
 
     @Test

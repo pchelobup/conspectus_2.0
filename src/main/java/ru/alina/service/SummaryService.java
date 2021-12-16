@@ -61,9 +61,9 @@ public class SummaryService {
         return summaryRepository.countChecked(userId);
     }
 
-    public long countAllQuestion(int userId) {
+  /*  public long countAllQuestion(int userId) {
         return summaryRepository.countAllQuestion(userId);
-    }
+    } */
 
     //null if empty
     public List<Summary> getByTopic(int topicId, int userId) {

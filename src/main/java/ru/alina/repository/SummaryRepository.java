@@ -18,7 +18,7 @@ public interface SummaryRepository {
 
     long countChecked(int userId);
 
-    long countAllQuestion(int userId);
+/*   long countAllQuestion(int userId); */
 
 
     List<Summary> getByTopic(int topicId, int userId);

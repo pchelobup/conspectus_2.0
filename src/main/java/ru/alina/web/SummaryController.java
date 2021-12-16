@@ -38,7 +38,7 @@ public class SummaryController {
         int userId = SecurityUtil.authUserId();
         model.addAttribute("topics", topicService.getAll(userId));
         model.addAttribute("checkedCount", summaryService.countChecked(userId));
-        model.addAttribute("count", summaryService.countAllQuestion(userId));
+        model.addAttribute("count", summaryService.getCount(userId));
         return "home";
     }
 

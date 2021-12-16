@@ -32,17 +32,17 @@ public class Summary extends BaseEntity {
 
 
     @NotBlank
-    String question;
+    private String question;
 
     @NotBlank
-    String answer;
+    private String answer;
 
     @Column(name = "checked", nullable = false)
     private boolean check;
 
-    @ManyToOne()
-    @JoinColumn(name = "topic_id" )
-    Topic topic;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "topic_id")
+    private Topic topic;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -58,6 +58,15 @@ public class Summary extends BaseEntity {
 
     public Summary(String question, String answer, boolean check, Topic topic) {
         this(null, question, answer, check, topic);
+    }
+
+    /* for test */
+
+    public Summary(Integer id, String question, String answer, boolean check) {
+        super(id);
+        this.question = question;
+        this.answer = answer;
+        this.check = check;
     }
 
     public Summary() {

@@ -55,12 +55,12 @@ public class JpaSummaryRepository implements SummaryRepository {
                 .getSingleResult();
     }
 
-    @Override
+   /* @Override
     public long countAllQuestion(int userId) {
         return em.createNamedQuery(Summary.ALL_QUESTION_COUNT, Long.class)
                 .setParameter("userId", userId)
                 .getSingleResult();
-    }
+    } */
 
     @Override
     public List<Summary> getByTopic(int topicId, int userId) {
