@@ -20,11 +20,13 @@ public class SummaryData {
     public final static int COUNT_CHECKED_BY_TOPIC = 2;
     public final static int COUNT_NOT_CHECKED_BY_TOPIC = 2;
 
+    public static final Topic TOPIC = new Topic(TOPIC_ID,  "ООП");
     public static final Summary SUMMARY1 = new Summary(SUMMARY1_ID, "Что такое ООП", "ООП - программа предcтавленна в виде совокупноти объектов", true);
     public static final Summary SUMMARY2 = new Summary(SUMMARY2_ID, "Принципы ООП","наследование, инкапсуляция, абстракция, полиморфизм", false);
     public static final Summary SUMMARY3 = new Summary(SUMMARY3_ID, "Объект","сущность реального мира, которая является основной единицей ООП", true);
     public static final Summary SUMMARY4 = new Summary(SUMMARY4_ID, "Класс","шаблон для объета", false);
     public static final Summary SUMMARY5 = new Summary(SUMMARY5_ID, "UNIQUE","гарантирует уникальность значений в столбце", true);
+    public static final Summary SUMMARY1_WITH_TOPIC = new Summary(SUMMARY1_ID, "Что такое ООП", "ООП - программа предcтавленна в виде совокупноти объектов", true, TOPIC);
 
     public static final List<Summary> SUMMARIES = List.of(SUMMARY1, SUMMARY2, SUMMARY3, SUMMARY4, SUMMARY5);
     public static final List<Summary> SUMMARIES_CHECKED = List.of(SUMMARY1, SUMMARY3, SUMMARY5);
@@ -32,11 +34,11 @@ public class SummaryData {
     public static final List<Summary> SUMMARIES_ONE_TOPIC = List.of(SUMMARY1, SUMMARY2, SUMMARY3, SUMMARY4);
 
     public static Summary getNew() {
-        return new Summary(null, "new question", "new answer", false, new Topic(TOPIC_ID,  "ООП"));
+        return new Summary(null, "new question", "new answer", false, TOPIC);
     }
 
     public static Summary getUpdated() {
-        return new Summary(SUMMARY1_ID, "updated questuin", "updated answer", SUMMARY1.isCheck(), new Topic(TOPIC_ID,  "ООП"));
+        return new Summary(SUMMARY1_ID, "updated questuin", "updated answer", SUMMARY1.isCheck(), TOPIC);
     }
 
     public static void match(Summary actual, Summary expeted) {

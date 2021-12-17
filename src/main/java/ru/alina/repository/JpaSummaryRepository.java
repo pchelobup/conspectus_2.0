@@ -3,6 +3,7 @@ package ru.alina.repository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.alina.model.Summary;
+import ru.alina.model.Topic;
 import ru.alina.model.User;
 
 import javax.persistence.EntityManager;
@@ -16,8 +17,9 @@ public class JpaSummaryRepository implements SummaryRepository {
     EntityManager em;
 
     @Override
-    public Summary save(Summary summary, int userId) {
+    public Summary save(Summary summary, int topicId, int userId) {
         summary.setUser(em.getReference(User.class, userId));
+        summary.setTopic(em.getReference(Topic.class, topicId));
         if (summary.isNew()) {
             em.persist(summary);
             return summary;
@@ -42,6 +44,14 @@ public class JpaSummaryRepository implements SummaryRepository {
     }
 
     @Override
+    public Summary getWithTopic(int id, int userId) {
+        return em.createNamedQuery(Summary.GET_WITH_TOPIC, Summary.class)
+                .setParameter("id", id)
+                .setParameter("userId", userId)
+                .getSingleResult();
+    }
+
+    @Override
     public List<Summary> getAll(int userId) {
         return em.createNamedQuery(Summary.ALL, Summary.class)
                 .setParameter("userId", userId)
@@ -55,13 +65,6 @@ public class JpaSummaryRepository implements SummaryRepository {
                 .getSingleResult();
     }
 
-   /* @Override
-    public long countAllQuestion(int userId) {
-        return em.createNamedQuery(Summary.ALL_QUESTION_COUNT, Long.class)
-                .setParameter("userId", userId)
-                .getSingleResult();
-    } */
-
     @Override
     public List<Summary> getByTopic(int topicId, int userId) {
         return em.createNamedQuery(Summary.BELONG_TOPIC, Summary.class)
@@ -71,7 +74,15 @@ public class JpaSummaryRepository implements SummaryRepository {
     }
 
     @Override
-    public Summary getRandomNotChecked(int userId) {
+    public List<Summary> getByTopicName(String topicName, int userId) {
+        return em.createQuery(Summary.BY_TOPIC_NAME, Summary.class)
+                .setParameter(1, userId)
+                .setParameter(2, topicName)
+                .getResultList();
+    }
+
+    @Override
+    public Summary getRandomNotCheckedWithTopic(int userId) {
         Integer max = (Integer)
                 em.createQuery("select max(s.id) from Summary s where s.user.id=:userId and s.check =false")
                         .setParameter("userId", userId)
@@ -90,16 +101,17 @@ public class JpaSummaryRepository implements SummaryRepository {
         int id = min + (int) (Math.random() * ++max);
 
 
-        return (Summary) em.createQuery("SELECT s from Summary s where s.id >=:id and s.user.id=:userId and s.check =false ")
+        return (Summary) em.createQuery("SELECT s from Summary s JOIN FETCH s.topic where s.id >=:id and s.user.id=:userId and s.check =false ")
                 .setParameter("id", id)
                 .setParameter("userId", userId)
                 .setMaxResults(1)
                 .getSingleResult();
     }
 
+
     @Override
-    public List<Summary> getCheckedSummary(int userId) {
-        List<Summary> summaries = em.createNamedQuery(Summary.CHECKED_SUMMARY, Summary.class)
+    public List<Summary> getCheckedSummaryWithTopic(int userId) {
+        List<Summary> summaries = em.createNamedQuery(Summary.CHECKED_SUMMARY_WITH_TOPIC, Summary.class)
                 .setParameter("userId", userId)
                 .getResultList();
         return summaries.size() == 0 ? null : summaries;

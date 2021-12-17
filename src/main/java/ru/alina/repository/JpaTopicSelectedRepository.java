@@ -1,5 +1,6 @@
 package ru.alina.repository;
 
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.alina.model.Topic;
@@ -27,10 +28,17 @@ public class JpaTopicSelectedRepository implements TopicSelectedRepository {
 
     @Override
     public Topic getTopicSelected(int userId) {
-        TopicSelected topicSelected = (TopicSelected) em.createQuery("SELECT t from TopicSelected t where t.user.id=:userId")
+        List<TopicSelected> topicSelected =  em.createQuery("SELECT t from TopicSelected t where t.user.id=:userId")
                 .setParameter("userId", userId)
-                .getSingleResult();
-        return topicSelected.getTopic();
+                .getResultList();
+        /*на случай если topic который был selected удалили*/
+        if (topicSelected.size()==0) {
+
+            return (Topic) em.createQuery("SELECT t from Topic t where t.user.id=?1")
+                    .setParameter(1,userId)
+                    .getResultList().get(0);
+        }
+        return DataAccessUtils.singleResult(topicSelected).getTopic();
     }
 
     @Override

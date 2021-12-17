@@ -96,7 +96,7 @@ public class SummaryController {
             summary.setQuestion(question);
             summary.setAnswer(answer);
             summary.setTopic(topic);
-            summaryService.update(summary, userId);
+            summaryService.update(summary, topicId, userId);
 
         } else if (submit.equalsIgnoreCase("delete")) {
             summaryService.delete(sid, userId);
@@ -109,11 +109,11 @@ public class SummaryController {
     public String add(WebRequest request, Model model) {
         int userId = SecurityUtil.authUserId();
         int topicId = Integer.parseInt(Objects.requireNonNull(request.getParameter("topicId")));
-        Topic topic = topicService.get(topicId, userId);
+        //Topic topic = topicService.get(topicId, userId);
         String question = request.getParameter("question");
         String answer = request.getParameter("answer");
-        Summary summary = new Summary(question, answer, false, topic);
-        summaryService.create(summary, SecurityUtil.authUserId());
+        Summary summary = new Summary(question, answer, false);
+        summaryService.create(summary, topicId, userId);
         model.addAttribute("topics", topicService.getAll(SecurityUtil.authUserId()));
         return "redirect:/conspectus/add";
     }

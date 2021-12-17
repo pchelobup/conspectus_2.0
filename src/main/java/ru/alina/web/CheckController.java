@@ -34,7 +34,7 @@ public class CheckController {
     public String checkInit(Model model) {
         if (!check.isExist()) {
             int userId = SecurityUtil.authUserId();
-            List<Summary> summaryList = summaryService.getCheckedSummary(userId);
+            List<Summary> summaryList = summaryService.getCheckedSummaryWithTopic(userId);
             if (summaryList !=null){
                 LinkedList<Summary> summaries = new LinkedList(summaryList);
                 Collections.shuffle(summaries);
@@ -84,7 +84,7 @@ public class CheckController {
                 int userId = SecurityUtil.authUserId();
                 Summary summary = summaryService.get(sid, userId);
                 summary.setCheck(false);
-                summaryService.update(summary, userId);
+                summaryService.update(summary, summary.getTopic().getId(), userId);
             }
             else {
                 check.incrementRightAnswer();
@@ -101,7 +101,7 @@ public class CheckController {
         int sid = Integer.parseInt(Objects.requireNonNull(request.getParameter("sid")));
         LinkedList<Summary> summaries = check.getSummaries();
         if (summaries.getFirst().getId()==sid) {
-            model.addAttribute("summary", summaryService.get(sid, userId));
+            model.addAttribute("summary", summaryService.getWithTopic(sid, userId));
             model.addAttribute("number", check.getNumber());
             model.addAttribute("count", check.getCount());
             return "checkAnswer";

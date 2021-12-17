@@ -9,7 +9,8 @@ VALUES (1, 'User1', 'password'),
 
 INSERT INTO topic (id, name, user_id)
 VALUES (3, 'ООП', 1),
-       (4, 'SQL', 1);
+       (4, 'SQL', 1),
+       (5, 'spring', 1);
 
 INSERT INTO topic_selected(id, topic_id, user_id)
 VALUES (5, 3, 1);

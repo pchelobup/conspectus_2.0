@@ -40,7 +40,7 @@ class SummaryServiceTest extends ServiceTest {
 
     @Test
     void getRandomNotChecked() {
-        Summary actual = summaryService.getRandomNotChecked(USER_ID);
+        Summary actual = summaryService.getRandomNotCheckedWithTopic(USER_ID);
         assertThat(SUMMARIES_NOT_CHECKED)
                 .contains(actual);
 
@@ -53,8 +53,8 @@ class SummaryServiceTest extends ServiceTest {
     }
 
     @Test
-    void getCheckedSummary() {
-        List<Summary> actual = summaryService.getCheckedSummary(USER_ID);
+    void getCheckedSummaryWithTopic() {
+        List<Summary> actual = summaryService.getCheckedSummaryWithTopic(USER_ID);
         match(actual, SUMMARIES_CHECKED);
     }
 
@@ -78,7 +78,7 @@ class SummaryServiceTest extends ServiceTest {
 
     @Test
     void create() {
-        Summary created = summaryService.create(getNew(), USER_ID);
+        Summary created = summaryService.create(getNew(), TOPIC_ID, USER_ID);
         int newId = created.getId();
         Summary summary = getNew();
         summary.setId(newId);
@@ -89,7 +89,7 @@ class SummaryServiceTest extends ServiceTest {
     @Test
     void update() {
         Summary updated = getUpdated();
-        summaryService.update(updated, USER_ID);
+        summaryService.update(updated, TOPIC_ID, USER_ID);
         match(summaryService.get(updated.getId(), USER_ID), getUpdated());
     }
 
@@ -97,7 +97,7 @@ class SummaryServiceTest extends ServiceTest {
     void updateNotOwn() {
         Summary updated = getUpdated();
         assertThrows(NotFoundException.class,
-                () -> summaryService.update(updated, USER_EMPTY_ID));
+                () -> summaryService.update(updated, TOPIC_ID, USER_EMPTY_ID));
 
         Summary actual = summaryService.get(SUMMARY1_ID, USER_ID);
         match(actual, SUMMARY1);
@@ -145,5 +145,11 @@ class SummaryServiceTest extends ServiceTest {
     void getCountUncheckedByTopic() {
         assertThat(summaryService.getCountCheckedByTopic(TOPIC_ID, USER_ID))
                 .isEqualTo(COUNT_NOT_CHECKED_BY_TOPIC);
+    }
+
+    @Test
+    void getWithTopic() {
+        Summary actual = summaryService.getWithTopic(SUMMARY1_ID, USER_ID);
+        match(actual, SUMMARY1_WITH_TOPIC);
     }
 }

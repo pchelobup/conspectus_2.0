@@ -34,7 +34,7 @@ public class LearnController {
             model.addAttribute("nothing", "allDone");
         }
         else {
-            Summary summary = summaryService.getRandomNotChecked(userId);
+            Summary summary = summaryService.getRandomNotCheckedWithTopic(userId);
             model.addAttribute("summary", summary);
             model.addAttribute("count", count);
             model.addAttribute("checkedCount", checkedCount);
@@ -50,7 +50,7 @@ public class LearnController {
             int userId = SecurityUtil.authUserId();
             Summary summary = summaryService.get(sid, userId);
             summary.setCheck(true);
-            summaryService.update(summary, userId);
+            summaryService.update(summary, summary.getTopic().getId(), userId);
         }
         return "redirect:/learn";
     }
@@ -61,7 +61,7 @@ public class LearnController {
         int sid = Integer.parseInt(Objects.requireNonNull(request.getParameter("sid")));
         long count = summaryService.getCount(userId);
         long checkedCount = summaryService.countChecked(userId);
-        model.addAttribute("summary", summaryService.get(sid, userId));
+        model.addAttribute("summary", summaryService.getWithTopic(sid, userId));
         model.addAttribute("type", "learn");
         model.addAttribute("count", count);
         model.addAttribute("checkedCount", checkedCount);

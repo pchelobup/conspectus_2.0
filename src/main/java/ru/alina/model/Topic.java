@@ -1,5 +1,7 @@
 package ru.alina.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
@@ -20,10 +22,12 @@ public class Topic extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
 
     @OneToMany(mappedBy = "topic", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Summary> summaries;
 
     public Topic(String name) {

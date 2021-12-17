@@ -103,7 +103,7 @@ public class ReviewTopicController {
                     summary.setCheck(true);
                     review.incrementRightAnswerUnchecked();
                 }
-                summaryService.update(summary, SecurityUtil.authUserId());
+                summaryService.update(summary, topicId, SecurityUtil.authUserId());
             } else if (summary.isCheck() && answer) {
                 review.incrementRightAnswerChecked();
             }

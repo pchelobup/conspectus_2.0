@@ -1,5 +1,7 @@
 package ru.alina.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Objects;
@@ -9,11 +11,13 @@ import java.util.Objects;
         @NamedQuery(name = Summary.ALL, query = "SELECT s from Summary s where s.user.id=:userId"),
         @NamedQuery(name = Summary.COUNT_CHECKED, query = "SELECT COUNT(s) from Summary s where s.user.id=:userId and s.check=true"),
         @NamedQuery(name = Summary.ALL_QUESTION_COUNT, query = "SELECT COUNT(s) from Summary s where s.user.id=:userId"),
-        @NamedQuery(name = Summary.BELONG_TOPIC, query = "SELECT s from Summary s where s.user.id=:userId and s.topic.id=:topicId"),
-        @NamedQuery(name = Summary.CHECKED_SUMMARY, query = "SELECT s from Summary s WHERE s.user.id=:userId and s.check=true"),
+        @NamedQuery(name = Summary.BY_TOPIC_ID, query = "SELECT s from Summary s where s.user.id=:userId and s.topic.id=:topicId"),
+        @NamedQuery(name = Summary.BY_TOPIC_NAME, query = "SELECT s from Summary s where s.user.id=?1 and s.topic.name=?2"),
+        @NamedQuery(name = Summary.CHECKED_SUMMARY_WITH_TOPIC, query = "SELECT s from Summary s join fetch s.topic WHERE s.user.id=:userId and s.check=true"),
         @NamedQuery(name = Summary.COUNT, query = "SELECT COUNT(s) from Summary s WHERE s.user.id=:userId"),
         @NamedQuery(name = Summary.COUNT_CHECKED_BY_TOPIC, query = "SELECT COUNT(s) from Summary s WHERE s.topic.id=:topicId and s.user.id=:userId and s.check=true"),
-        @NamedQuery(name = Summary.COUNT_UNCHECKED_BY_TOPIC, query = "SELECT COUNT (s) from Summary s WHERE s.topic.id=:topicId and s.user.id=:userId and s.check=false")
+        @NamedQuery(name = Summary.COUNT_UNCHECKED_BY_TOPIC, query = "SELECT COUNT (s) from Summary s WHERE s.topic.id=:topicId and s.user.id=:userId and s.check=false"),
+        @NamedQuery(name = Summary.GET_WITH_TOPIC, query = "SELECT s from Summary s JOIN FETCH s.topic t where s.id=:id and s.user.id=:userId ")
 }
 )
 @Entity
@@ -24,12 +28,13 @@ public class Summary extends BaseEntity {
     public static final String ALL = "Summary.getAllSorted";
     public static final String COUNT_CHECKED = "Summary.checkedCount";
     public static final String ALL_QUESTION_COUNT = "Summary.allQuestionCount";
-    public static final String BELONG_TOPIC = "Summary.belongTopic";
-    public static final String CHECKED_SUMMARY = "Summary.getCheckedSummary";
+    public static final String BY_TOPIC_ID = "Summary.byTopicId";
+    public static final String BY_TOPIC_NAME = "Summary.byTopicName";
+    public static final String CHECKED_SUMMARY_WITH_TOPIC = "Summary.getCheckedSummaryWithTopic";
     public static final String COUNT = "Summary.getCount";
     public static final String COUNT_CHECKED_BY_TOPIC = "Summary.getCountCheckedByTopic";
     public static final String COUNT_UNCHECKED_BY_TOPIC = "Summary.getCountUncheckedByTopic";
-
+    public static final String GET_WITH_TOPIC = "Summary.getWithTopic";
 
     @NotBlank
     private String question;
@@ -42,10 +47,12 @@ public class Summary extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "topic_id")
+   // @JsonIgnore
     private Topic topic;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     public Summary(Integer id, String question, String answer, boolean check, Topic topic) {
@@ -70,6 +77,12 @@ public class Summary extends BaseEntity {
     }
 
     public Summary() {
+    }
+
+    public Summary(String question, String answer, boolean check) {
+        this.question = question;
+        this.answer = answer;
+        this.check = check;
     }
 
     public String getQuestion() {

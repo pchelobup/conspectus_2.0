@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class TopicService {
     private static final String name = "Topic.class";
     TopicRepository topicRepository;
@@ -38,18 +38,18 @@ public class TopicService {
         return topicSave;
     }
 
+    @Transactional
     public void update(Topic topic, int userId) {
         Assert.notNull(topic, "topic must not be null");
         ValidationUtil.notFound(topicRepository.save(topic, userId), topic.getId(), Topic.class.getSimpleName());
     }
 
-
+    @Transactional
     public void delete(int id, int userId) {
         ValidationUtil.notFound(topicRepository.delete(id, userId), id, name);
     }
 
-    @Transactional(readOnly = true)
-    public Topic get(int id, int userId){
+    public Topic get(int id, int userId) {
         return ValidationUtil.notFoundAndReturn(topicRepository.get(id, userId), id, name);
     }
 
@@ -62,6 +62,7 @@ public class TopicService {
         return topicSelectedRepository.getTopicSelected(userId);
     }
 
+    @Transactional
     public void saveUpdateTopicSelected(Topic topic, int userId) {
         ValidationUtil.notFound(topic.getUser().getId() == userId, topic.getId(), Topic.class.getSimpleName());
         TopicSelected topicSelected = topicSelectedRepository.get(userId);
