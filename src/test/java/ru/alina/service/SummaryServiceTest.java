@@ -89,7 +89,7 @@ class SummaryServiceTest extends ServiceTest {
     @Test
     void update() {
         Summary updated = getUpdated();
-        summaryService.update(updated, TOPIC_ID, USER_ID);
+        summaryService.update(updated, USER_ID);
         match(summaryService.get(updated.getId(), USER_ID), getUpdated());
     }
 
@@ -97,7 +97,7 @@ class SummaryServiceTest extends ServiceTest {
     void updateNotOwn() {
         Summary updated = getUpdated();
         assertThrows(NotFoundException.class,
-                () -> summaryService.update(updated, TOPIC_ID, USER_EMPTY_ID));
+                () -> summaryService.update(updated, USER_EMPTY_ID));
 
         Summary actual = summaryService.get(SUMMARY1_ID, USER_ID);
         match(actual, SUMMARY1);

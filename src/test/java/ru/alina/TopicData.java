@@ -9,7 +9,7 @@ public class TopicData {
     public static final int TOPIC1_ID = 3;
     public static final int TOPIC2_ID = 4;
     public static final int TOPIC3_ID = 5;
-    public static final int TOPI_SELETED_ID = 5;
+    public static final int TOPIC_SELETED_ID = 5;
     public final static int USER_ID = 1;
 
     public final static int USER_EMPTY_ID = 2;

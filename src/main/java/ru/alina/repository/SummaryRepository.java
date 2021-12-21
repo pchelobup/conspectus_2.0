@@ -5,7 +5,9 @@ import ru.alina.model.Summary;
 import java.util.List;
 
 public interface SummaryRepository {
-    Summary save(Summary summary, int topicId, int userId);
+    Summary create(Summary summary, int topicId, int userId);
+
+    Summary update(Summary summary, int userId);
 
     // false if summary do not belong to userId
     boolean delete(int id, int userId);

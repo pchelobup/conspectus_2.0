@@ -41,11 +41,11 @@ public class SummaryService {
             Topic topic = topicRepository.get(topiId, userId);
             topicSelectedRepository.update(topic, userId);
         }
-        return summaryRepository.save(summary, topiId, userId);
+        return summaryRepository.create(summary, topiId, userId);
     }
-    public void update (Summary summary, int topicId, int userId) {
+    public void update (Summary summary, int userId) {
         ValidationUtil.notNull(summary,"summary must not be null");
-        ValidationUtil.notFound(summaryRepository.save(summary, topicId, userId), summary.getId(), name);
+        ValidationUtil.notFound(summaryRepository.update(summary, userId), summary.getId(), name);
     }
 
     public void delete(int id, int userId) {
