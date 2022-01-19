@@ -5,7 +5,7 @@ DELETE FROM users;
 
 INSERT INTO users (id, login, password)
 VALUES (1, 'User1', 'password'),
-       (2, 'User2', '0000');
+       (2, 'User2', '00007');
 
 INSERT INTO topic (id, name, user_id)
 VALUES (3, 'ООП', 1),

@@ -12,7 +12,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
-import ru.alina.json.JsonUtil;
+import ru.alina.web.JsonUtil;
 import ru.alina.web.SecurityUtil;
 
 import javax.annotation.PostConstruct;

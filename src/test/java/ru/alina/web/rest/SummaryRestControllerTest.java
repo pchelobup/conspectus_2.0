@@ -6,7 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.alina.TopicData;
-import ru.alina.json.JsonUtil;
+import ru.alina.web.JsonUtil;
 import ru.alina.model.Summary;
 import ru.alina.service.SummaryService;
 import ru.alina.util.exception.NotFoundException;

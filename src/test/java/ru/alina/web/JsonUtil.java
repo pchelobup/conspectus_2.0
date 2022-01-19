@@ -1,4 +1,4 @@
-package ru.alina.json;
+package ru.alina.web;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectReader;

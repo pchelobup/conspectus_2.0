@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.*;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import ru.alina.json.JsonUtil;
+import ru.alina.web.JsonUtil;
 import ru.alina.model.Topic;
 import ru.alina.service.TopicService;
 import ru.alina.util.exception.NotFoundException;

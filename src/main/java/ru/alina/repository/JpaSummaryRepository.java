@@ -16,18 +16,6 @@ public class JpaSummaryRepository implements SummaryRepository {
     @PersistenceContext
     EntityManager em;
 
- /*   @Override
-    public Summary save(Summary summary, int userId) {
-        summary.setUser(em.getReference(User.class, userId));
-        if (summary.isNew()) {
-            em.persist(summary);
-            return summary;
-        } else if (get(summary.getId(), userId) == null) {
-            return null;
-        }
-        return em.merge(summary);
-    } */
-
     @Override
     public Summary create(Summary summary, int topicId, int userId) {
         summary.setUser(em.getReference(User.class, userId));

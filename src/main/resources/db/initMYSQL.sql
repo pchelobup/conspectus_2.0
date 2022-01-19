@@ -11,7 +11,9 @@ create table users
     id      int auto_increment
         primary key,
     login    varchar(45) null,
-    password varchar(45) null
+    password varchar(45) null,
+    constraint users_unique_login_idx
+        unique (login)
 );
 
 create table topic

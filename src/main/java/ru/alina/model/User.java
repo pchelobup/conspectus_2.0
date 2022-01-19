@@ -6,7 +6,9 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "users")
+@NamedQuery(name = User.DELETE, query = "DELETE from User u where u.id=?1")
 public class User {
+    public static final String DELETE = "User.delete";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,7 +38,7 @@ public class User {
         this.password = password;
     }
 
-    public User(int id, String login, String password) {
+    public User(Integer id, String login, String password) {
         this.id=id;
         this.login = login;
         this.password = password;
