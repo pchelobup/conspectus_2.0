@@ -1,5 +1,6 @@
 package ru.alina;
 
+import ru.alina.model.Role;
 import ru.alina.model.Topic;
 import ru.alina.model.User;
 import java.util.List;
@@ -19,7 +20,7 @@ public class TopicData {
     public static final Topic TOPIC1 = new Topic(TOPIC1_ID,  "ООП");
     public static final Topic TOPIC2 = new Topic(TOPIC2_ID,  "SQL");
     public static final Topic TOPIC3 = new Topic(TOPIC3_ID,  "spring");
-    public static final Topic TOPIC2_WITH_USER = new Topic(TOPIC2_ID,  "SQL", new User(USER_ID, "l", "p"));
+    public static final Topic TOPIC2_WITH_USER = new Topic(TOPIC2_ID,  "SQL", new User(USER_ID, "l", "p", Role.USER));
     public static final Topic TOPIC_SELECTED = TOPIC1;
 
     public static final List<Topic> TOPICS = List.of(TOPIC2, TOPIC3, TOPIC1);

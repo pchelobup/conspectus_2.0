@@ -6,13 +6,15 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "users")
-@NamedQuery(name = User.DELETE, query = "DELETE from User u where u.id=?1")
-public class User {
-    public static final String DELETE = "User.delete";
+@NamedQueries({
+        @NamedQuery(name = User.DELETE, query = "DELETE from User u where u.id=?1"),
+        @NamedQuery(name = User.GET_BY_LOGIN, query = "select u from User u where u.login=?1")
+})
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Integer id;
+
+public class User extends BaseEntity {
+    public static final String DELETE = "User.delete";
+    public static final String GET_BY_LOGIN = "User.getByLogin";
 
     @NotBlank
     @Size(min = 5, max = 10)
@@ -21,6 +23,9 @@ public class User {
     @NotBlank
     @Size(min = 5, max = 10)
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     public String getLogin() {
         return login;
@@ -38,19 +43,21 @@ public class User {
         this.password = password;
     }
 
-    public User(Integer id, String login, String password) {
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public User(Integer id, String login, String password, Role role) {
         this.id=id;
         this.login = login;
         this.password = password;
+        this.role = role;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public User() {
     }

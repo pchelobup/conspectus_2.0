@@ -12,6 +12,7 @@ create table users
         primary key,
     login    varchar(45) null,
     password varchar(45) null,
+    role varchar(20) not null,
     constraint users_unique_login_idx
         unique (login)
 );

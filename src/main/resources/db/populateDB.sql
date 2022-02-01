@@ -3,9 +3,9 @@ DELETE FROM topic_selected;
 DELETE FROM topic;
 DELETE FROM users;
 
-INSERT INTO users (id, login, password)
-VALUES (1, 'User1', 'password'),
-       (2, 'User2', '00007');
+INSERT INTO users (id, login, password, role)
+VALUES (1, 'User1', 'password', 'USER'),
+       (2, 'User2', '00007', 'USER');
 
 INSERT INTO topic (id, name, user_id)
 VALUES (3, 'ООП', 1),

@@ -2,6 +2,7 @@ package ru.alina.service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import ru.alina.model.Role;
 import ru.alina.model.User;
 import ru.alina.util.exception.NotFoundException;
 
@@ -29,7 +30,7 @@ class UserServiceTest extends ServiceTest {
     @Test
     void dubliateLogin() {
         assertThrows(PersistenceException.class,
-                () -> service.create(new User(null, USER1.getLogin(), "12345")));
+                () -> service.create(new User(null, USER1.getLogin(), "12345", Role.USER)));
     }
 
     @Test
@@ -76,5 +77,11 @@ class UserServiceTest extends ServiceTest {
     @Test
     void getAll() {
         match(service.getAll(), USERS);
+    }
+
+    @Test
+    void getByLogin() {
+        User actual = service.getByLogin(USER1.getLogin());
+        match(actual, USER1);
     }
 }
