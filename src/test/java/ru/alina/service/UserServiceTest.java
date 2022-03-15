@@ -79,9 +79,4 @@ class UserServiceTest extends ServiceTest {
         match(service.getAll(), USERS);
     }
 
-    @Test
-    void getByLogin() {
-        User actual = service.getByLogin(USER1.getLogin());
-        match(actual, USER1);
-    }
 }
